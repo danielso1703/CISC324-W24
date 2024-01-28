@@ -6,7 +6,8 @@ def A(y):
     """Computes and returns the sum of 0 + 1 + 2 + 3 + ... + k + ... + [y/2]"""
     total = 0
     for i in range(int(y/2) + 1):
-        total += i
+        total += i 
+    print("A Total: " +str(total) )  
     return total
 
 def B(y):
@@ -14,6 +15,7 @@ def B(y):
     total = 0
     for i in range(int(math.floor(y/2)+1), y+1):
         total += i
+    print("B total: "+ str(total))
     return total
 
 def main(n = None):
@@ -34,22 +36,27 @@ def main(n = None):
     # Create a child process
     pid = os.fork()
     print("pid=", pid)
-
+        
     # If the fork failed
     if pid < 0:
         print("Fork system call failed")
         return
 
     if pid != 0:  # Parent process
+        pid, status = os.wait()
+        childReturn = os.WEXITSTATUS(status)
+        print(childReturn)
+        Total += childReturn
         Total += A(x)
     else:  # Child process
         Total += B(x)
-        os._exit(0)  # Ensure the child process terminates here
+        os._exit(Total)  # Ensure the child process terminates here
 
     # If this is the parent process, print the total summation
     if pid != 0:
         print(f"The total is: {Total}")
 
 if __name__ == "__main__":
-    n = 1
+    n = 26
+    print("n = " + str(n))
     main(n)
